@@ -15,7 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker image
-        run: docker build --build-arg AWS_ACCOUNT=${{ secrets.AWS_ACCOUNT }} --build-arg BASE_IMAGE=${{ env.IMAGE_NAME }} --build-arg TAG=latest -t ${{ env.IMAGE_NAME }}:latest . -q >/dev/null 2>&1 || echo "Build Failed"
+        env:
+          AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+        run:
+          export AWS_ACCOUNT ;
+          docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=${{ env.IMAGE_NAME }} --build-arg TAG=latest -t ${{ env.IMAGE_NAME }}:latest . -q >/dev/null 2>&1 || echo "Build Failed"
         working-directory: build
 
   test:
