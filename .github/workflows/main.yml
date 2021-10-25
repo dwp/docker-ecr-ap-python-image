@@ -83,7 +83,7 @@ jobs:
           export ECR_DOCKERFILE ;
           echo -e "$ECR_REQUIREMENTS" > requirements.txt ;
           echo -e "$ECR_DOCKERFILE" > Dockerfile ;
-          ../build_and_push_to_ecr.sh
+          ./build_and_push_to_ecr.sh
         working-directory: build
 
   snyk-monitor-mgt-dev:
