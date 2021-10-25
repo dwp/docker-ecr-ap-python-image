@@ -8,6 +8,7 @@ on:
 
 env:
   IMAGE_NAME: docker-ecr-ap-python-image
+  BASE_IMAGE_NAME: docker-ecr-ap-base-image
 
 jobs:
   docker-build-and-scan:
@@ -19,7 +20,7 @@ jobs:
           AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
         run:
           export AWS_ACCOUNT  ;
-          docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=${{ env.IMAGE_NAME }} --build-arg TAG=latest -t ${{ env.IMAGE_NAME }}:latest . -q >/dev/null 2>&1 || echo "Build Failed"
+          docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=${{ env.BASE_IMAGE_NAME }} --build-arg TAG=latest -t ${{ env.IMAGE_NAME }}:latest . -q >/dev/null 2>&1 || echo "Build Failed"
         working-directory: build
 
   test:

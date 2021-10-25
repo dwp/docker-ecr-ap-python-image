@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Build the image
-docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=$IMAGE_NAME --build-arg TAG=latest -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
+docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=$BASE_IMAGE_NAME --build-arg TAG=latest -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
 
 # Dev First
 DEV_REG_URL="${DEV_AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
