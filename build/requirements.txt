@@ -14,8 +14,8 @@ prophet
 lightgbm
 mllib
 seaborn
-keras
 tensorflow==2.6.0
+keras
 torch==1.10.0
 yake
 spark-nlp
