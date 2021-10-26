@@ -14,11 +14,11 @@ prophet
 lightgbm
 mllib
 seaborn
-tensorflow==2.6.0
-keras==2.6.0
 torch==1.10.0
 yake
 spark-nlp
 scikit-spark
 statsmodels
 arch
+tensorflow==2.6.0
+keras==2.6.0
