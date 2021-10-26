@@ -8,7 +8,6 @@ lightfm
 prophet
 lightgbm
 mllib
-spacy[transformers,lookups]
 seaborn
 keras
 scipy
