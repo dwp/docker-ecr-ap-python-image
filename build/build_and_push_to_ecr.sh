@@ -10,6 +10,7 @@ AWS_SESSION_TOKEN="$DEV_AWS_SESSION_TOKEN" \
 aws ecr get-login-password --region "$AWS_REGION" | \
 docker login --username AWS --password-stdin "$DEV_REG_URL"
 
+
 # Build the image
 docker build --build-arg AWS_ACCOUNT=$DEV_AWS_ACCOUNT --build-arg BASE_IMAGE=$BASE_IMAGE_NAME --build-arg TAG=latest -t "$IMAGE_NAME" .
 
