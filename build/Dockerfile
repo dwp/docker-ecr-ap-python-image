@@ -6,9 +6,9 @@ FROM ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${BASE_IMAGE}
 ADD requirements.txt /srv/jupyterhub/
 ARG CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
-RUN apk add --no-cache alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev libevent-dev
+RUN apk add --no-cache alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev libevent-dev libblas-dev liblapack-dev libatlas-base-dev gfortran
 
-RUN pip3 install --default-timeout=200 --ignore-installed -r /srv/jupyterhub/requirements.txt
+RUN pip3 install --default-timeout=200 -r /srv/jupyterhub/requirements.txt
 
 RUN pip3 install --no-cache-dir spacy[transformers,lookups]
 
