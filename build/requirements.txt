@@ -5,6 +5,7 @@ srsly
 
 sklearn
 lightfm
+pystan
 prophet
 lightgbm
 mllib
