@@ -15,10 +15,8 @@ lightgbm
 mllib
 seaborn
 keras
-tensorflow
-torch
-nltk
-dateparser
+tensorflow==2.6.0
+torch==1.10.0
 yake
 spark-nlp
 scikit-spark
