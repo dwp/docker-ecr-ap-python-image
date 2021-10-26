@@ -8,7 +8,7 @@ ARG CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 RUN apk add --no-cache alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev
 
-RUN pip3 install --default-timeout=200 --ignore-installed -r /srv/jupyterhub/requirements.txt
+RUN pip3 install --ignore-installed -r /srv/jupyterhub/requirements.txt
 
 RUN python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_md && python3 -m spacy download en_core_web_lg && python3 -m spacy download en_core_web_trf
 
