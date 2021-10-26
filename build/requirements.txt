@@ -14,12 +14,13 @@ prophet
 lightgbm
 mllib
 seaborn
-torch==1.10.0
 yake
 spark-nlp
 scikit-spark
 statsmodels
 arch
 
-tensorflow==2.6.0
-keras==2.6.0
+# manylinux packages
+torch
+tensorflow
+keras
