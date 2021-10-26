@@ -14,7 +14,7 @@ prophet
 lightgbm
 mllib
 seaborn
-tensorflow==2.6.0
+tensorflow
 keras
 torch==1.10.0
 yake
