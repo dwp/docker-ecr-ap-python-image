@@ -20,5 +20,6 @@ spark-nlp
 scikit-spark
 statsmodels
 arch
+
 tensorflow==2.6.0
 keras==2.6.0
