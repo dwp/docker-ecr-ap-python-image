@@ -19,8 +19,8 @@ spark-nlp
 scikit-spark
 statsmodels
 arch
-
-# manylinux packages
 torch
-tensorflow
-keras
+
+# # manylinux packages
+# tensorflow
+# keras
