@@ -7,7 +7,6 @@ plotly
 xgboost
 neuralcoref
 ice
-
 sklearn
 lightfm
 pystan
