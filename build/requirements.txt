@@ -1,2 +1,23 @@
+cymem
+murmurhash
+numpy
+srsly
 
+sklearn
+lightfm
+prophet
+lightgbm
+mllib
 spacy[transformers,lookups]
+seaborn
+keras
+scipy
+tensorflow
+torch
+nltk
+dateparser
+yake
+spark-nlp
+scikit-spark
+statsmodels
+arch
