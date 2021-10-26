@@ -12,7 +12,7 @@ seaborn
 keras
 scipy
 tensorflow
-torch
+torch==1.10
 nltk
 dateparser
 yake
