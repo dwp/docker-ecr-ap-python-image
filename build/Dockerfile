@@ -17,7 +17,7 @@ RUN apk add /tmp/bazel-0.26.1-r0.apk
 
 ADD https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.4.3.tar.gz /tmp/tensorflow.tar.gz
 
-RUN cd /tmp && tar xzf tensorflow.tar.gz && rm tensorflow.tar.gz && cd tensorflow-2.4.3 && python3 configure.py && bazel build --config=cuda //tensorflow/tools/pip_package:tensorflow_pip_package && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && pip install /tmp/tensorflow_pkg/tensorflow-2.4.3.whl
+RUN cd /tmp && tar xzf tensorflow.tar.gz && rm tensorflow.tar.gz && cd tensorflow-2.4.3 && python3 configure.py && bazel build --config=cuda //tensorflow/tools/pip_package:build_pip_package && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && pip install /tmp/tensorflow_pkg/tensorflow-2.4.3.whl
 
 RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml
 
