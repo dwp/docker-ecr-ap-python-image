@@ -7,7 +7,7 @@ ADD requirements.txt /srv/jupyterhub/
 
 ARG CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
-RUN apk add --no-cache build-base alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev libevent-dev musl-dev linux-headers openblas openblas-dev gfortran perl libc6-compat cmake
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing build-base alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev libevent-dev musl-dev linux-headers openblas openblas-dev gfortran perl libc6-compat cmake
 
 ENV TENSORFLOW_VERSION=2.4.3 \
     BAZEL_VERSION=4.2.1 \
@@ -22,23 +22,6 @@ ENV TENSORFLOW_VERSION=2.4.3 \
     TF_NEED_VERBS=0 \
     TF_NEED_OPENCL=0 \
     TF_NEED_CUDA=1 \
-    TF_NEED_MPI=0
-
-ENV TENSORFLOW_VERSION=1.13.2 \
-    NUMPY_VERSION=1.17.0 \
-    JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
-    BAZEL_VERSION=0.19.2 \
-    LOCAL_RESOURCES=2048,1.0,1.0 \
-    CC_OPT_FLAGS='-march=native' \
-    TF_NEED_JEMALLOC=1 \
-    TF_NEED_GCP=0 \
-    TF_NEED_HDFS=0 \
-    TF_NEED_S3=0 \
-    TF_ENABLE_XLA=0 \
-    TF_NEED_GDR=0 \
-    TF_NEED_VERBS=0 \
-    TF_NEED_OPENCL=0 \
-    TF_NEED_CUDA=0 \
     TF_NEED_MPI=0
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
