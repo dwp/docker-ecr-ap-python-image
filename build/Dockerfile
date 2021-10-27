@@ -30,7 +30,7 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
             --virtual build-deps cmake build-base linux-headers \
             bash wget file openblas-dev freetype-dev libjpeg-turbo-dev \
             libpng-dev hdf5-dev openjdk8 swig zip patch && \
-    pip install --no-cache-dir "numpy==$NUMPY_VERSION" h5py && \
+    pip install --no-cache-dir numpy h5py && \
     pip install --no-cache-dir --no-deps keras_applications keras_preprocessing && \
     echo 'Downloading and compiling bazel' && \
     wget -q "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip" \
