@@ -24,6 +24,8 @@ ENV TENSORFLOW_VERSION=2.4.3 \
     TF_NEED_CUDA=1 \
     TF_NEED_MPI=0
 
+RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml
+
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
             openblas libpng libjpeg-turbo hdf5 libstdc++ && \
     apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
@@ -70,7 +72,6 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
            /var/tmp/* /usr/share/man /tmp/* /var/cache/apk/* /var/log/* \
            /root/.cache /usr/local/share/man /root/.wget-hsts \
            /usr/local/bin/bazel
-RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml
 
 RUN pip3 install --ignore-install --default-timeout=200 -r /srv/jupyterhub/requirements.txt
 
