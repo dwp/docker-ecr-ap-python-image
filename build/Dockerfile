@@ -35,35 +35,35 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
     pip install --no-cache-dir numpy h5py && \
     pip install --no-cache-dir --no-deps keras_applications keras_preprocessing
 
-ADD https://raw.githubusercontent.com/davido/bazel-alpine-package/master/david@ostrovsky.org-5a0369d6.rsa.pub \
-    /etc/apk/keys/david@ostrovsky.org-5a0369d6.rsa.pub
-ADD https://github.com/davido/bazel-alpine-package/releases/download/0.26.1/bazel-0.26.1-r0.apk \
-    /tmp/bazel-0.26.1-r0.apk
-RUN apk add /tmp/bazel-0.26.1-r0.apk
+# ADD https://raw.githubusercontent.com/davido/bazel-alpine-package/master/david@ostrovsky.org-5a0369d6.rsa.pub \
+#     /etc/apk/keys/david@ostrovsky.org-5a0369d6.rsa.pub
+# ADD https://github.com/davido/bazel-alpine-package/releases/download/0.26.1/bazel-0.26.1-r0.apk \
+#     /tmp/bazel-0.26.1-r0.apk
+# RUN apk add /tmp/bazel-0.26.1-r0.apk
 
-RUN    echo 'Downloading and compiling tensorflow' && \
-    wget -q "https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz" \
-         -O tensorflow.tar.gz && \
-    tar xzf tensorflow.tar.gz && \
-    rm tensorflow.tar.gz && \
-    cd "tensorflow-${TENSORFLOW_VERSION}" && \
-    bazel build -c opt --local_resources "${LOCAL_RESOURCES}" //tensorflow/tools/pip_package:build_pip_package && \
-    ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
-    cd / && \
-    cp /tmp/tensorflow_pkg/*.whl /root && \
-    pip install --no-cache-dir /root/*.whl && \
-    python -c 'import tensorflow as tf; print(tf.__version__)' && \
-    find /usr/lib /usr/local \
-         \( -type d -a -name '__pycache__' -o -name '(test|tests)' \) \
-         -o \( -type f -a -name '(*.pyc|*.pxd)' -o -name '(*.pyo|*.pyd)' \) \
-         -exec rm -rf '{}' + && \
-    find /usr/lib* /usr/local/lib* -name '*.so' -print \
-       -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
-    apk del build-deps && \
-    rm -rf "bazel-${BAZEL_VERSION}" "tensorflow-${TENSORFLOW_VERSION}" \
-           /var/tmp/* /usr/share/man /tmp/* /var/cache/apk/* /var/log/* \
-           /root/.cache /usr/local/share/man /root/.wget-hsts \
-           /usr/local/bin/bazel
+# RUN    echo 'Downloading and compiling tensorflow' && \
+#     wget -q "https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz" \
+#          -O tensorflow.tar.gz && \
+#     tar xzf tensorflow.tar.gz && \
+#     rm tensorflow.tar.gz && \
+#     cd "tensorflow-${TENSORFLOW_VERSION}" && \
+#     bazel build -c opt --local_resources "${LOCAL_RESOURCES}" //tensorflow/tools/pip_package:build_pip_package && \
+#     ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
+#     cd / && \
+#     cp /tmp/tensorflow_pkg/*.whl /root && \
+#     pip install --no-cache-dir /root/*.whl && \
+#     python -c 'import tensorflow as tf; print(tf.__version__)' && \
+#     find /usr/lib /usr/local \
+#          \( -type d -a -name '__pycache__' -o -name '(test|tests)' \) \
+#          -o \( -type f -a -name '(*.pyc|*.pxd)' -o -name '(*.pyo|*.pyd)' \) \
+#          -exec rm -rf '{}' + && \
+#     find /usr/lib* /usr/local/lib* -name '*.so' -print \
+#        -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
+#     apk del build-deps && \
+#     rm -rf "bazel-${BAZEL_VERSION}" "tensorflow-${TENSORFLOW_VERSION}" \
+#            /var/tmp/* /usr/share/man /tmp/* /var/cache/apk/* /var/log/* \
+#            /root/.cache /usr/local/share/man /root/.wget-hsts \
+#            /usr/local/bin/bazel
 
 RUN pip3 install --ignore-install --default-timeout=200 -r /srv/jupyterhub/requirements.txt
 
