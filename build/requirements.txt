@@ -10,7 +10,7 @@ neuralcoref
 ice
 sklearn
 lightfm
-pystan
+pystan==2.19.1.1
 prophet
 lightgbm
 mllib
@@ -21,6 +21,6 @@ scikit-spark
 arch
 torch
 
-# manylinux packages
-tensorflow
-keras
+# # manylinux packages
+# tensorflow
+# keras
