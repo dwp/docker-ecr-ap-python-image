@@ -47,8 +47,6 @@ RUN    echo 'Downloading and compiling tensorflow' && \
     tar xzf tensorflow.tar.gz && \
     rm tensorflow.tar.gz && \
     cd "tensorflow-${TENSORFLOW_VERSION}" && \
-    sed -i -e '/define TF_GENERATE_BACKTRACE/d' tensorflow/core/platform/default/stacktrace.h && \
-    sed -i -e '/define TF_GENERATE_STACKTRACE/d' tensorflow/core/platform/stacktrace_handler.cc && \
     bazel build -c opt --local_resources "${LOCAL_RESOURCES}" //tensorflow/tools/pip_package:build_pip_package && \
     ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
     cd / && \
