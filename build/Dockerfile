@@ -33,21 +33,15 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
             bash wget file openblas-dev freetype-dev libjpeg-turbo-dev \
             libpng-dev hdf5-dev openjdk8 swig zip patch && \
     pip install --no-cache-dir numpy h5py && \
-    pip install --no-cache-dir --no-deps keras_applications keras_preprocessing && \
-    echo 'Downloading and compiling bazel' && \
-    wget -q "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip" \
-         -O bazel.zip && \
-    mkdir "bazel-${BAZEL_VERSION}" && \
-    unzip -qd "bazel-${BAZEL_VERSION}" bazel.zip && \
-    rm bazel.zip && \
-    cd "bazel-${BAZEL_VERSION}" && \
-    sed -i -e 's/-classpath/-J-Xmx6096m -J-Xms128m -classpath/g' \
-        scripts/bootstrap/compile.sh && \
-    bash compile.sh && \
-    cp -p output/bazel /usr/local/bin/ && \
-    cd / && \
-    bazel version && \
-    echo 'Downloading and compiling tensorflow' && \
+    pip install --no-cache-dir --no-deps keras_applications keras_preprocessing
+
+ADD https://raw.githubusercontent.com/davido/bazel-alpine-package/master/david@ostrovsky.org-5a0369d6.rsa.pub \
+    /etc/apk/keys/david@ostrovsky.org-5a0369d6.rsa.pub
+ADD https://github.com/davido/bazel-alpine-package/releases/download/0.26.1/bazel-0.26.1-r0.apk \
+    /tmp/bazel-0.26.1-r0.apk
+RUN apk add /tmp/bazel-0.26.1-r0.apk
+
+RUN    echo 'Downloading and compiling tensorflow' && \
     wget -q "https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz" \
          -O tensorflow.tar.gz && \
     tar xzf tensorflow.tar.gz && \
