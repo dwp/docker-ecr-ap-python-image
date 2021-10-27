@@ -25,7 +25,6 @@ ENV TENSORFLOW_VERSION=2.4.3 \
     TF_NEED_MPI=0
 
 RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml
-
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
             openblas libpng libjpeg-turbo hdf5 libstdc++ && \
     apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
