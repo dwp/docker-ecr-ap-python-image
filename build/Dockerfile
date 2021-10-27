@@ -16,6 +16,7 @@ ADD https://github.com/davido/bazel-alpine-package/releases/download/0.26.1/baze
 RUN apk add /tmp/bazel-0.26.1-r0.apk
 
 ADD https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.4.3.tar.gz /tmp/tensorflow.tar.gz
+
 RUN cd /tmp && tar xzf tensorflow.tar.gz && rm tensorflow.tar.gz && cd tensorflow-2.4.3 && python3 configure.py
 
 RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml
