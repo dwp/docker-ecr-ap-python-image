@@ -18,10 +18,9 @@ seaborn
 yake
 spark-nlp
 scikit-spark
-statsmodels
 arch
 torch
 
-# # manylinux packages
-# tensorflow
-# keras
+# manylinux packages
+tensorflow
+keras
