@@ -5,7 +5,7 @@ FROM ${AWS_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${BASE_IMAGE}
 
 ADD requirements.txt /srv/jupyterhub/
 
-RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml setuptools_rust docker-compose
+RUN pip3 install --upgrade pip setuptools wheel pycurl lxml setuptools_rust docker-compose
 RUN pip3 install --no-cache-dir numpy h5py && \
     pip3 install --no-cache-dir --no-deps keras_applications keras_preprocessing
 
