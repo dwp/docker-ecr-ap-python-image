@@ -1,4 +1,3 @@
-srsly
 gensim
 python-dateutil
 cython
