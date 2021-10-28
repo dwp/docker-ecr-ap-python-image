@@ -20,5 +20,5 @@ scikit-spark
 arch
 
 # manylinux packages
-tensorflow-cpu
-keras
+tensorflow-cpu>=2.4.0
+keras>=2.4.0
