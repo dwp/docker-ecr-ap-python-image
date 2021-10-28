@@ -9,7 +9,7 @@ RUN pip3 install --upgrade pip setuptools wheel pycurl lxml setuptools_rust dock
 RUN pip3 install --no-cache-dir numpy h5py && \
     pip3 install --no-cache-dir --no-deps keras_applications keras_preprocessing
 
-RUN pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+RUN pip3 install torch>=1.10.0+cpu torchvision>=0.11.1+cpu torchaudio>=0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 RUN pip3 install --no-cache-dir spacy[transformers,lookups]
 RUN python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_md && python3 -m spacy download en_core_web_lg && python3 -m spacy download en_core_web_trf
 
