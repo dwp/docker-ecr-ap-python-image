@@ -10,7 +10,7 @@ neuralcoref
 ice
 sklearn
 lightfm
-pystan==2.19.1.1
+pystan>=2.19.1.1
 prophet
 lightgbm
 mllib
@@ -19,7 +19,6 @@ yake
 spark-nlp
 scikit-spark
 arch
-torch
 
 # # manylinux packages
 # tensorflow

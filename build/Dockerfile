@@ -32,8 +32,8 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
             --virtual build-deps cmake build-base linux-headers \
             bash wget file openblas-dev freetype-dev libjpeg-turbo-dev \
             libpng-dev hdf5-dev openjdk8 swig zip patch && \
-    pip install --no-cache-dir numpy h5py && \
-    pip install --no-cache-dir --no-deps keras_applications keras_preprocessing
+    pip3 install --no-cache-dir numpy h5py && \
+    pip3 install --no-cache-dir --no-deps keras_applications keras_preprocessing
 
 # ADD https://raw.githubusercontent.com/davido/bazel-alpine-package/master/david@ostrovsky.org-5a0369d6.rsa.pub \
 #     /etc/apk/keys/david@ostrovsky.org-5a0369d6.rsa.pub
@@ -51,8 +51,8 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
 #     ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
 #     cd / && \
 #     cp /tmp/tensorflow_pkg/*.whl /root && \
-#     pip install --no-cache-dir /root/*.whl && \
-#     python -c 'import tensorflow as tf; print(tf.__version__)' && \
+#     pip3 install --no-cache-dir /root/*.whl && \
+#     python3 -c 'import tensorflow as tf; print(tf.__version__)' && \
 #     find /usr/lib /usr/local \
 #          \( -type d -a -name '__pycache__' -o -name '(test|tests)' \) \
 #          -o \( -type f -a -name '(*.pyc|*.pxd)' -o -name '(*.pyo|*.pyd)' \) \
@@ -66,7 +66,7 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
 #            /usr/local/bin/bazel
 
 RUN pip3 install --ignore-install --default-timeout=200 -r /srv/jupyterhub/requirements.txt
-
+RUN pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 RUN pip3 install --no-cache-dir spacy[transformers,lookups]
 
 RUN python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_sm && python3 -m spacy download en_core_web_md && python3 -m spacy download en_core_web_lg && python3 -m spacy download en_core_web_trf
