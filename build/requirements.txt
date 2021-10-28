@@ -20,6 +20,6 @@ spark-nlp
 scikit-spark
 arch
 
-# # manylinux packages
-# tensorflow
-# keras
+# manylinux packages
+tensorflow
+keras
