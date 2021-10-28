@@ -7,22 +7,6 @@ ADD requirements.txt /srv/jupyterhub/
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing build-base alpine-sdk g++ gcc krb5-dev libffi-dev npm pkgconfig python3-dev py3-numpy-dev zlib-dev libevent-dev musl-dev linux-headers openblas openblas-dev gfortran perl libc6-compat cmake cargo
 
-ENV TENSORFLOW_VERSION=2.4.3 \
-    JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
-    BAZEL_VERSION=4.2.1 \
-    LOCAL_RESOURCES=2048,1.0,1.0 \
-    CC_OPT_FLAGS='-march=native' \
-    TF_NEED_JEMALLOC=1 \
-    TF_NEED_GCP=0 \
-    TF_NEED_HDFS=1 \
-    TF_NEED_S3=1 \
-    TF_ENABLE_XLA=0 \
-    TF_NEED_GDR=0 \
-    TF_NEED_VERBS=0 \
-    TF_NEED_OPENCL=0 \
-    TF_NEED_CUDA=0 \
-    TF_NEED_MPI=0
-
 RUN python3 -m ensurepip && pip3 install --upgrade pip setuptools wheel pycurl lxml setuptools_rust docker-compose
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
             openblas libpng libjpeg-turbo hdf5 libstdc++ && \
@@ -33,45 +17,56 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/te
     pip3 install --no-cache-dir numpy h5py && \
     pip3 install --no-cache-dir --no-deps keras_applications keras_preprocessing
 
-RUN    echo 'Downloading and compiling bazel' && \
-    wget -q "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip" \
-         -O bazel.zip && \
-    mkdir "bazel-${BAZEL_VERSION}" && \
-    unzip -qd "bazel-${BAZEL_VERSION}" bazel.zip && \
-    rm bazel.zip && \
-    cd "bazel-${BAZEL_VERSION}" && \
-    sed -i -e 's/-classpath/-J-Xmx6096m -J-Xms128m -classpath/g' \
-        scripts/bootstrap/compile.sh && \
-    bash compile.sh && \
-    cp -p output/bazel /usr/local/bin/ && \
-    cd / && \
-    bazel version
+# ===================================================
+# Download BAZEL FOR ALPINE
+# ===================================================
+ENV BAZEL_VERSION 0.26.1
 
-RUN echo 'Downloading and compiling tensorflow' && \
-    wget -q "https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz" \
-         -O tensorflow.tar.gz && \
-    tar xzf tensorflow.tar.gz && \
-    rm tensorflow.tar.gz && \
-    cd "tensorflow-${TENSORFLOW_VERSION}" && \
-    python3 ./configure.py && \
-    bazel version && \
-    bazel build -c opt --local_resources "${LOCAL_RESOURCES}" //tensorflow/tools/pip_package:build_pip_package && \
-    ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
-    cd / && \
-    cp /tmp/tensorflow_pkg/*.whl /root && \
-    pip3 install --no-cache-dir /root/*.whl && \
-    python3 -c 'import tensorflow as tf; print(tf.__version__)' && \
-    find /usr/lib /usr/local \
-         \( -type d -a -name '__pycache__' -o -name '(test|tests)' \) \
-         -o \( -type f -a -name '(*.pyc|*.pxd)' -o -name '(*.pyo|*.pyd)' \) \
-         -exec rm -rf '{}' + && \
-    find /usr/lib* /usr/local/lib* -name '*.so' -print \
-       -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
-    apk del build-deps && \
-    rm -rf "bazel-${BAZEL_VERSION}" "tensorflow-${TENSORFLOW_VERSION}" \
-           /var/tmp/* /usr/share/man /tmp/* /var/cache/apk/* /var/log/* \
-           /root/.cache /usr/local/share/man /root/.wget-hsts \
-           /usr/local/bin/bazel
+# Install latest bazel from https://github.com/davido/bazel-alpine-package
+ADD https://raw.githubusercontent.com/davido/bazel-alpine-package/master/david@ostrovsky.org-5a0369d6.rsa.pub \
+    /etc/apk/keys/david@ostrovsky.org-5a0369d6.rsa.pub
+ADD https://github.com/davido/bazel-alpine-package/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-r0.apk \
+    /tmp/bazel-${BAZEL_VERSION}-r0.apk
+RUN apk add /tmp/bazel-${BAZEL_VERSION}-r0.apk
+
+# ===================================================
+# Download Tensorflow
+# ===================================================
+ENV TENSORFLOW_VERSION 1.14.0
+
+# WORKDIR /tmp
+WORKDIR /go/src/github.com/tensorflow
+RUN git clone https://github.com/tensorflow/tensorflow.git
+
+# ===================================================
+# OPTIONAL: Build Tensorflow (core)
+# ===================================================
+ENV BAZEL_LOCAL_RESOURCES 6144,2,1.0
+
+RUN cd /tmp/tensorflow \
+  && : musl-libc does not have "secure_getenv" function \
+  && sed -i -e '/JEMALLOC_HAVE_SECURE_GETENV/d' third_party/jemalloc.BUILD \
+  && sed -i -e '/define TF_GENERATE_BACKTRACE/d' tensorflow/core/platform/default/stacktrace.h \
+  && sed -i -e '/define TF_GENERATE_STACKTRACE/d' tensorflow/core/platform/stacktrace_handler.cc \
+  &&  CC_OPT_FLAGS="-march=native" \
+      TF_NEED_JEMALLOC=1 \
+      TF_NEED_GCP=0 \
+      TF_NEED_HDFS=0 \
+      TF_NEED_S3=0 \
+      TF_ENABLE_XLA=0 \
+      TF_NEED_GDR=0 \
+      TF_NEED_VERBS=0 \
+      TF_NEED_OPENCL=0 \
+      TF_NEED_CUDA=0 \
+      TF_NEED_MPI=0 \
+      bash configure
+RUN cd /tmp/tensorflow-${TENSORFLOW_VERSION} \
+    && bazel build -c opt --local_resources ${BAZEL_LOCAL_RESOURCES} //tensorflow:libtensorflow.so
+
+FROM scratch
+  COPY --from=0 /tmp/tensorflow/bazel-bin/tensorflow/libtensorflow.so /tensorflow/libtensorflow.so
+  COPY --from=0 /tmp/tensorflow/bazel-bin/tensorflow/libtensorflow_framework.so /tensorflow/libtensorflow_framework.so
+
 
 RUN pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 RUN pip3 install --no-cache-dir spacy[transformers,lookups]
