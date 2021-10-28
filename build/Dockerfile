@@ -47,7 +47,7 @@ RUN    echo 'Downloading and compiling bazel' && \
     cd / && \
     bazel version
 
-RUN    echo 'Downloading and compiling tensorflow' && \
+RUN echo 'Downloading and compiling tensorflow' && \
     wget -q "https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz" \
          -O tensorflow.tar.gz && \
     tar xzf tensorflow.tar.gz && \
