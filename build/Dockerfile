@@ -45,6 +45,8 @@ RUN    echo 'Downloading and compiling tensorflow' && \
     tar xzf tensorflow.tar.gz && \
     rm tensorflow.tar.gz && \
     cd "tensorflow-${TENSORFLOW_VERSION}" && \
+    python3 ./configure.py && \
+    bazel version && \
     bazel build -c opt --local_resources "${LOCAL_RESOURCES}" //tensorflow/tools/pip_package:build_pip_package && \
     ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg && \
     cd / && \
