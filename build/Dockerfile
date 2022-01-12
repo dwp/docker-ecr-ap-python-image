@@ -1,3 +1,5 @@
-FROM alpine:latest
+FROM continuumio/miniconda3:latest
 
-CMD ["whoami"]
+COPY environment.yml .
+
+RUN conda env create -f environment.yml

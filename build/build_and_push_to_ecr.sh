@@ -11,7 +11,7 @@ aws ecr get-login-password --region "$AWS_REGION" | \
 docker login --username AWS --password-stdin "$DEV_REG_URL"
 
 # Build the image
-docker build --build-arg AWS_ACCOUNT=$DEV_AWS_ACCOUNT --build-arg BASE_IMAGE=$BASE_IMAGE_NAME --build-arg TAG=latest -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
+docker build -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
 
 for TAG in "latest" "$SEM_VER" ; do 
   docker tag "$IMAGE_NAME" "$DEV_REG_URL/$IMAGE_NAME:$TAG"
@@ -25,7 +25,7 @@ aws ecr get-login-password --region "$AWS_REGION" | \
 docker login --username AWS --password-stdin "$REG_URL"
 
 # Build the image
-docker build --build-arg AWS_ACCOUNT=$AWS_ACCOUNT --build-arg BASE_IMAGE=$BASE_IMAGE_NAME --build-arg TAG=latest -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
+docker build -t "$IMAGE_NAME" . >/dev/null 2>&1 || echo "Build Failed"
 
 for TAG in "latest" "$SEM_VER" ; do
   docker tag "$IMAGE_NAME" "$REG_URL/$IMAGE_NAME:$TAG"
