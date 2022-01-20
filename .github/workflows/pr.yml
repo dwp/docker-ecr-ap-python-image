@@ -7,8 +7,9 @@ on:
       - '**/*.md'
 
 env:
-  IMAGE_NAME: docker-ecr-ap-python-image
+  IMAGE_NAME: docker-ecr-ap-python-image-atest
   BASE_IMAGE_NAME: docker-ecr-ap-base-image
+  DOCKERFILE: Dockerfile_training
 
 jobs:
   docker-build-and-scan:
@@ -20,7 +21,7 @@ jobs:
           AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
         run:
           export AWS_ACCOUNT  ;
-          docker build -t ${{ env.IMAGE_NAME }}:latest . -q >/dev/null 2>&1 || echo "Build Failed"
+          docker build -t ${{ env.IMAGE_NAME }}:latest -f ${{env.DOCKERFILE}} . -q >/dev/null 2>&1 || echo "Build Failed"
         working-directory: build
 
   format:

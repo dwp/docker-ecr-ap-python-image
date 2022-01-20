@@ -53,6 +53,5 @@ def main():
 
     print("Terraform config successfully created")
 
-
 if __name__ == "__main__":
     main()

@@ -3,8 +3,9 @@ name: Master
 on: workflow_dispatch
 
 env:
-  IMAGE_NAME: docker-ecr-ap-python-image
+  IMAGE_NAME: docker-ecr-ap-python-image-atest
   BASE_IMAGE_NAME: docker-ecr-ap-base-image
+  DOCKERFILE: Dockerfile_training
 
 jobs:
   get-publish-version:
@@ -80,7 +81,7 @@ jobs:
           export DEV_AWS_ACCESS_KEY_ID DEV_AWS_SECRET_ACCESS_KEY DEV_AWS_SESSION_TOKEN ; 
           export AWS_REGION AWS_ACCOUNT DEV_AWS_ACCOUNT ;
           export ECR_REQUIREMENTS ;
-          echo -e "$ECR_REQUIREMENTS" > environment.yml ;
+          echo -e "$ECR_REQUIREMENTS" > environment_0.yml ;
           ./build_and_push_to_ecr.sh
         working-directory: build
 
@@ -113,7 +114,7 @@ jobs:
         with:
           command: monitor
           image: ${{ steps.login-ecr.outputs.registry }}/${{ env.IMAGE_NAME }}:latest
-          args: --file=./build/Dockerfile --policy-path=./build/.snyk --org=dwp-dataworks
+          args: --file=./build/${{ env.DOCKERFILE }} --policy-path=./build/.snyk --org=dwp-dataworks
 
   snyk-monitor-mgt:
     runs-on: ubuntu-latest
@@ -144,4 +145,4 @@ jobs:
         with:
           command: monitor
           image: ${{ steps.login-ecr.outputs.registry }}/${{ env.IMAGE_NAME }}:latest
-          args: --file=./build/Dockerfile --policy-path=./build/.snyk --org=dwp-dataworks
+          args: --file=./build/${{ env.DOCKERFILE }} --policy-path=./build/.snyk --org=dwp-dataworks
